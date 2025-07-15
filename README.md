@@ -12,6 +12,40 @@
 
 ## 安装
 
+### 方法一：直接下载可执行文件（推荐给非技术用户）
+
+1. 下载对应系统的可执行文件：
+   - macOS/Linux: `dist/yt-t`
+   - Windows: `dist/yt-t.exe`
+
+2. 给文件添加执行权限（macOS/Linux）：
+   ```bash
+   chmod +x yt-t
+   ```
+
+3. 直接运行：
+   ```bash
+   ./yt-t https://www.youtube.com/watch?v=VIDEO_ID
+   ```
+
+### 方法二：通过 pip 安装（需要 Python 环境）
+
+```bash
+pip install yt-t
+```
+
+### 方法三：使用安装脚本
+
+**macOS/Linux:**
+```bash
+curl -L https://github.com/yourusername/youtube-transcription-cli/raw/main/install.sh | bash
+```
+
+**Windows:**
+下载并运行 `install_windows.bat`
+
+### 方法四：从源代码安装（开发者）
+
 首先确保已安装 uv：
 
 ```bash
@@ -35,19 +69,19 @@ uv pip install -e .
 ### 基本用法
 
 ```bash
-uv run yt-t https://www.youtube.com/watch?v=VIDEO_ID
+yt-t https://www.youtube.com/watch?v=VIDEO_ID
 ```
 
-或者在激活虚拟环境后：
+如果是从源代码运行：
 
 ```bash
-yt-t https://www.youtube.com/watch?v=VIDEO_ID
+uv run yt-t https://www.youtube.com/watch?v=VIDEO_ID
 ```
 
 ### 指定输出文件
 
 ```bash
-uv run yt-t https://www.youtube.com/watch?v=VIDEO_ID -o output.txt
+yt-t https://www.youtube.com/watch?v=VIDEO_ID -o output.txt
 ```
 
 ### 设置 Gemini API Key
@@ -93,6 +127,28 @@ export GEMINI_API_KEY='your-api-key-here'
 - ruff>=0.1.0
 
 所有依赖在 `pyproject.toml` 中定义，通过 `uv sync` 自动安装。
+
+## 分享给朋友
+
+如果你想分享这个工具给不懂编程的朋友，推荐使用以下方式：
+
+### 最简单的方法
+
+1. 运行构建脚本生成可执行文件：
+   ```bash
+   python build_executable.py
+   ```
+
+2. 将生成的 `dist/yt-t` 文件发送给朋友
+
+3. 朋友收到后只需：
+   - macOS/Linux: `chmod +x yt-t && ./yt-t <YouTube链接>`
+   - Windows: 双击运行 `yt-t.exe <YouTube链接>`
+
+### 其他分享方式
+
+- **一键安装脚本**: 发送 `install.sh` (macOS/Linux) 或 `install_windows.bat` (Windows)
+- **pip 安装**: 如果已发布到 PyPI，朋友可以直接 `pip install yt-t`
 
 ## 许可证
 

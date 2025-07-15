@@ -22,8 +22,9 @@ setup(
     install_requires=[
         "click>=8.0.0",
         "youtube-transcript-api>=0.6.0",
-        "google-genai>=0.1.0",
+        "google-generativeai>=0.3.0",
         "requests>=2.25.0",
+        "python-dotenv>=0.19.0",
     ],
     entry_points={
         "console_scripts": [
