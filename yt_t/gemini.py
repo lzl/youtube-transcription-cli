@@ -5,6 +5,22 @@ from google.genai import types
 from .video_utils import get_video_info, should_split_video
 from .audio_utils import download_audio, speed_up_audio, get_audio_duration, split_audio, cleanup_temp_files
 
+# SRT 格式提示词
+# source: https://x.com/Gorden_Sun/status/1947196262320844990
+SRT_PROMPT_TEMPLATE = """识别我上传的音频/视频里的文字，并提供可快速复制的srt格式的字幕文本，每句字幕必须使用 hh:mm:ss,xxx --> hh:mm:ss,xxx 的时间标记，尤其是每句字幕的截止时间也务必遵循格式。中文必须使用简体中文，不能出现繁体字{segment_info}。
+以下是一段示例字幕，用作格式参考：
+1
+00:00:00,347 --> 00:00:07,037
+有一个问题其实就是，以后现在和过去哪个其实是最重要的，
+
+2
+00:00:07,037 --> 00:00:11,107
+那我觉得是过去创造了现在，现在来决定未来，
+
+3
+00:00:11,107 --> 00:00:17,217
+那我觉得说我们能够把握的其实只有现在。"""
+
 
 def transcribe_audio_file(client: genai.Client, audio_path: str, segment_info: str = "") -> Optional[str]:
     """转录音频文件
@@ -19,16 +35,7 @@ def transcribe_audio_file(client: genai.Client, audio_path: str, segment_info: s
     """
     model = "gemini-2.5-flash"
     
-    prompt = f"""请提取音频的完整字幕内容{segment_info}。
-
-输出格式要求：
-[MM:SS] 字幕内容
-[MM:SS] 下一句字幕
-
-请确保：
-1. 时间戳格式为 [MM:SS] 或 [HH:MM:SS]
-2. 按时间顺序排列
-3. 准确识别说话内容，包括标点符号"""
+    prompt = SRT_PROMPT_TEMPLATE.format(segment_info=segment_info)
 
     # 上传音频文件
     try:
@@ -183,7 +190,7 @@ def transcribe_youtube_direct(youtube_url: str) -> Optional[str]:
                         )
                     ),
                     types.Part.from_text(
-                        text="请提取视频的完整字幕内容。输出格式要求：\n\n[00:10] 字幕内容\n[00:15] 下一句字幕\n\n请确保时间戳格式为 [MM:SS]，并按时间顺序排列。"
+                        text=SRT_PROMPT_TEMPLATE.format(segment_info="")
                     ),
                 ],
             ),
